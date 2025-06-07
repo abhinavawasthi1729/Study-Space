@@ -1,0 +1,33 @@
+{
+  "name": "my_social_network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.1.0",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-formidable": "^1.2.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.7.4",
+    "mongoose": "^7.3.4",
+    "nodemailer": "^6.9.3",
+    "redis": "^4.6.7",
+    "redis-adapter": "^0.2.0",
+    "socket.io": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
