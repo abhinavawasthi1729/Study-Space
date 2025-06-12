@@ -1,3 +1,87 @@
+<%- include ("includes/header") %> <!-- Include the common header (navigation, meta tags, etc.) -->
+
+<!-- Styles specific to premium feature display -->
+<style>
+	/* Apply blur effect to the main content when showing premium modal */
+	.premium-section {
+		filter: blur(5px);
+	}
+
+	/* Style for the premium modal popup */
+	.premium {
+		position: fixed;
+		left: 30%;
+		top: 45%;
+		z-index: 100;
+		background-color: white;
+	}
+
+	/* Large header text in premium popup */
+	.premium h1 {
+		font-size: 70px;
+	}
+
+	/* Description text in premium popup */
+	.premium p {
+		font-size: 26px;
+	}
+</style>
+
+<!-- Premium Feature Modal -->
+<div class="premium">
+	<h1>Premium feature</h1>
+</div>
+
+<!-- Main content section, blurred due to premium modal -->
+<section class="premium-section">
+	<div class="gap gray-bg"> <!-- Wrapper with background color -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+
+					<!-- Content layout: sidebar - main - sidebar -->
+					<div class="row" id="page-contents">
+
+						<!-- Left sidebar (user menu, links, etc.) -->
+						<div class="col-md-3">
+							<%- include ("includes/left-sidebar") %>
+						</div>
+
+						<!-- Main content: Friends list section -->
+						<div class="col-md-6">
+							<div class="central-meta">
+								<div class="frnds">
+
+									<!-- Tabbed content area -->
+									<div class="tab-content">
+										<div class="tab-pane active fade show" id="frends">
+
+											<!-- Friends list container (to be populated dynamically) -->
+											<ul class="nearby-contct" id="friends"></ul>
+
+											<!-- Fallback blurred image for non-premium users -->
+											<img src="/public/blurs/friends.png">
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Right sidebar (suggestions, trending, etc.) -->
+						<div class="col-md-3">
+							<%- include ("includes/right-sidebar") %>
+						</div>
+
+					</div> <!-- /#page-contents -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<%- include ("includes/footer") %> <!-- Include the common footer (scripts, closing tags, etc.) -->
 <%- include ("includes/header") %>
 
 <style>
