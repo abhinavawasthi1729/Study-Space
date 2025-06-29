@@ -1,33 +1,42 @@
-<%- include("todo") -%>
-    <div class="box1" id="heading">
+<%- include("todo") -%> <!-- Include the 'todo' partial, which likely contains the head, styles, or navigation -->
 
-        <h1>Today</h1>
-    </div>
+<!-- Header section displaying the title -->
+<div class="box1" id="heading">
+    <h1>Today</h1>
+</div>
 
-    <div class="box">
+<!-- Container for the to-do list items and input -->
+<div class="box">
 
-        <% newListItems.forEach(function(item){ %>
-            <form action="/delete" method="post">
-                <div class="item">
-                    <div class="round">
+    <!-- Loop through each item in the to-do list -->
+    <% newListItems.forEach(function(item){ %>
 
-                        <input type="checkbox" name="checkbox" value="<%=item._id %>" onChange="this.form.submit()"
-                            id="checkbox">
-                        <label for="checkbox"></label>
+        <!-- Each item is wrapped in a form to handle deletion on checkbox change -->
+        <form action="/delete" method="post">
+            <div class="item">
 
-                    </div>
-                    <p>
-                        <%= item.name %>
-                    </p>
-                    <br>
+                <!-- Custom styled round checkbox -->
+                <div class="round">
+                    <!-- When checkbox is changed, form is submitted to delete the item -->
+                    <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()" id="checkbox">
+                    <label for="checkbox"></label> <!-- Label for styling the custom checkbox -->
                 </div>
 
-            </form>
-            <% }); %>
-                <form class="item" action="/" method="post">
-                    <input type="text" name="n" placeholder="new">
-                    <hr>
-                    <button id="b" type="submit" <span id="s2"></span>+</span></button>
+                <!-- Display the to-do item name -->
+                <p><%= item.name %></p>
+                <br>
+            </div>
+        </form>
 
-                </form>
-    </div>
+    <% }); %>
+
+    <!-- Form to add a new item to the to-do list -->
+    <form class="item" action="/" method="post">
+        <!-- Input for entering the new item name -->
+        <input type="text" name="n" placeholder="new">
+        <hr>
+        <!-- Submit button to add the item -->
+        <button id="b" type="submit"><span id="s2">+</span></button>
+    </form>
+
+</div>
