@@ -1,28 +1,37 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Include the header partial -->
 
 <section>
 	<div class="feature-photo">
 
+		<!-- Cover photo section -->
 		<figure>
-			<img class="cover-photo" id="cover-photo" style="width: 100%; height: 700px; object-fit: cover;" src="<%= mainURL + "/" + user.coverPhoto %>" onerror="this.src = '/public/img/default_cover.jpg'" />
+			<img class="cover-photo" id="cover-photo" 
+				style="width: 100%; height: 700px; object-fit: cover;" 
+				src="<%= mainURL + "/" + user.coverPhoto %>" 
+				onerror="this.src = '/public/img/default_cover.jpg'" />
 		</figure>
 
 		<div class="container-fluid">
 			<div class="row merged">
+				<!-- User avatar (left column) -->
 				<div class="col-md-2">
 					<div class="user-avatar">
 						<figure>
-
-							<img class="profile-image" id="profile-image" style="width: 100%; height: 150px; object-fit: cover;" src="<%= mainURL + "/" + user.profileImage %>" onerror="this.src = '/public/img/default_profile.jpg'" />
+							<img class="profile-image" id="profile-image" 
+								style="width: 100%; height: 150px; object-fit: cover;" 
+								src="<%= mainURL + "/" + user.profileImage %>" 
+								onerror="this.src = '/public/img/default_profile.jpg'" />
 						</figure>
 					</div>
 				</div>
+
+				<!-- User name (right column) -->
 				<div class="col-md-10">
 					<div class="timeline-info">
 						<ul>
 							<li class="admin-name">
 								<h5 class="user-name" style="padding-top: 20px; padding-bottom: 20px;">
-                                    <%= user.name %>
+                                    <%= user.name %> <!-- Display user's name -->
                                 </h5>
 							</li>
 						</ul>
@@ -34,16 +43,19 @@
 </section>
 
 <section>
+	<!-- Profile details section -->
 	<div class="gap gray-bg">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="row" id="page-contents">
 
+						<!-- Left sidebar -->
 						<div class="col-md-3">
                             <%- include ("includes/left-sidebar") %>
 						</div>
 
+						<!-- Main profile content -->
 						<div class="col-md-6">
 							<div class="central-meta">
 								<div class="editing-info">
@@ -53,6 +65,7 @@
 										Profile
 									</h5>
                                     
+                                    <!-- User profile fields with fallback for empty values -->
                                     <h3>Full Name</h3>
                                     <p><%= user.name %></p>
 
@@ -85,6 +98,7 @@
 							</div>
 						</div>
 
+                        <!-- Right sidebar -->
                         <div class="col-md-3">
                             <%- include ("includes/right-sidebar") %>
 						</div>
@@ -96,4 +110,4 @@
 	</div>
 </section>
 
-<%- include ("includes/footer") %>
+<%- include ("includes/footer") %> <!-- Include the footer partial -->
