@@ -1,98 +1,119 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Include common header (meta tags, CSS, navigation, etc.) -->
 
+<!-- Main section where post detail is displayed -->
 <section>
-	<div class="gap gray-bg">
-		<div class="container-fluid">
+	<div class="gap gray-bg"> <!-- Section with a gray background -->
+		<div class="container-fluid"> <!-- Full-width Bootstrap container -->
 			<div class="row">
 				<div class="col-md-12">
-					<div class="row" id="page-contents">
+					<div class="row" id="page-contents"> <!-- Row for page layout -->
 
+						<!-- Left sidebar (navigation, links, etc.) -->
 						<div class="col-md-3">
 							<%- include ("includes/left-sidebar") %>
 						</div>
 
+						<!-- Center column for displaying post details -->
 						<div class="col-md-6">
 
-							<div class="central-meta">
+							<div class="central-meta"> <!-- Main content wrapper -->
+
+								<!-- Individual post wrapper -->
                                 <div class="central-meta item">
                                     <div class="user-post">
                                         <div class="friend-info">
 
+                                            <!-- User profile image -->
                                             <figure>
-                                                <img src="<%= mainURL + "/" + post.user.profileImage %>" style="width: 60px; height: 60px; object-fit: cover;">
+                                                <img src="<%= mainURL + '/' + post.user.profileImage %>" style="width: 60px; height: 60px; object-fit: cover;">
                                             </figure>
 
+                                            <!-- User name and published date -->
                                             <div class="friend-name">
                                                 <ins>
                                                     <% if (post.type == "post") { %>
+                                                        <!-- If it's a standard post, link to user profile -->
                                                         <a href="<%= mainURL + '/user/' + post.user.username %>">
                                                             <%= post.user.name %>
                                                         </a>
                                                     <% } else {  %>
+                                                        <!-- If not a post (e.g. notification), just show name -->
                                                         <%= post.user.name %>
                                                     <% } %>
                                                 </ins>
 
+                                                <!-- Format and display the post's publish date -->
                                                 <%
                                                     var createdAt = new Date(post.createdAt);
                                                     var date = createdAt.getDate() + "";
                                                     date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
                                                 %>
-
                                                 <span>Published: <%= date %></span>
                                             </div>
 
+                                            <!-- Post content section (text, image, video) -->
                                             <div class="post-meta">
 
+                                                <!-- Caption or description -->
                                                 <div class="description">
-                                                    <p>
-                                                        <%= post.caption %>
-                                                    </p>
+                                                    <p><%= post.caption %></p>
                                                 </div>
 
+                                                <!-- If there's an image, display it -->
                                                 <% if (post.image != "") { %>
                                                     <img src="<%= mainURL + '/' + post.image %>">
                                                 <% } %>
 
+                                                <!-- If there's a video, embed it -->
                                                 <% if (post.video != "") { %>
                                                     <video style="height: 359px; width: 100%;" controls src="<%= mainURL + '/' + post.video %>"></video>
                                                 <% } %>
 
+                                                <!-- Likes section will be rendered dynamically -->
                                                 <div id="post-likes-section"></div>
                                             </div>
                                         </div>
 
+                                        <!-- Comments section will also be rendered dynamically -->
                                         <div id='post-comments-<%= post._id %>'></div>
 
                                     </div>
                                 </div>
 							</div>
-
 						</div>
 
+                        <!-- Right sidebar (suggested friends, ads, etc.) -->
                         <div class="col-md-3">
 							<%- include ("includes/right-sidebar") %>
 						</div>
 
-					</div>
+					</div> <!-- End row -->
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
+<!-- Hidden input to pass the post object as JSON to JavaScript -->
 <input type="hidden" id="post-data" value="<%= JSON.stringify(post); %>">
 
+<!-- Script to dynamically load likes and comments -->
 <script>
+    // Set flag to indicate this is the post detail view
     var isPostDetail = true;
 
+    // Function to render likes and comments for the post
     function showPostDetails() {
+        // Get post data from hidden input and parse it
         var post = document.getElementById("post-data").value;
         post = JSON.parse(post);
+
+        // Render likes section using helper function
         document.getElementById("post-likes-section").innerHTML = createLikesSection(post);
 
+        // Render comments section using helper function
         document.getElementById("post-comments-" + post._id).innerHTML = createCommentsSection(post);
     }
 </script>
 
-<%- include ("includes/footer") %>
+<%- include ("includes/footer") %> <!-- Include common footer (scripts, closing tags, etc.) -->
