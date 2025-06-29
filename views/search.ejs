@@ -1,9 +1,11 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Include the header partial -->
 
 <section>
+	<!-- Main search section with gray background -->
 	<div class="gap gray-bg">
 		<div class="container-fluid">
 
+			<!-- Navigation Tabs for People / Pages / Groups -->
 			<div class="row">
 				<div class="offset-md-3 col-md-6">
 					<div class="timeline-info">
@@ -18,24 +20,31 @@
 				</div>
 			</div>
 
+			<!-- Main content layout -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="row" id="page-contents">
 
+						<!-- Empty left column for spacing -->
 						<div class="col-md-3"></div>
 
+						<!-- Center column with search results -->
 						<div class="col-md-6">
 							<div class="central-meta">
 								<div class="frnds">
 
+									<!-- Tab panes for displaying different search categories -->
 									<div class="tab-content">
+
+										<!-- People tab (default active) -->
 										<div class="tab-pane active fade show" id="people">
 											<ul class="nearby-contct" id="search-results"></ul>
 										</div>
 
-										<!-- <div class="tab-pane active fade" id="pages">
+										<!-- Pages tab (commented out, marked as premium) -->
+										<!-- 
+										<div class="tab-pane active fade" id="pages">
 											<ul class="nearby-contct" id="search-result-pages"></ul>
-
 											<div class="premium">
 												<h1>Premium feature</h1>
 											</div>
@@ -43,16 +52,18 @@
 
 										<div class="tab-pane active fade" id="groups">
 											<ul class="nearby-contct" id="search-result-groups"></ul>
-
 											<div class="premium">
 												<h1>Premium feature</h1>
 											</div>
-										</div> -->
+										</div>
+										-->
+
 									</div>
 								</div>
 							</div>
 						</div>
 
+						<!-- Empty right column for spacing -->
 						<div class="col-md-3"></div>
 
 					</div>
@@ -62,30 +73,35 @@
 	</div>
 </section>
 
+<!-- Hidden input field to store the search query -->
 <input type="hidden" id="query" value="<%= query %>">
 
 <script>
+	// Flag to indicate we're displaying search results
 	var isSearchResults = true;
 
+	// Function to fetch and display search results using AJAX
 	function showSearchResults() {
 		var ajax = new XMLHttpRequest();
-		ajax.open("POST", "/search", true);
+		ajax.open("POST", "/search", true); // POST request to /search
 
 		ajax.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-
-				var response = JSON.parse(this.responseText);
+				var response = JSON.parse(this.responseText); // Parse response
 
 				if (response.status == "success") {
-
 					var html = "";
+
+					// Iterate over search results
 					for (var a = 0; a < response.data.length; a++) {
 						var data = response.data[a];
 
+						// Skip current logged-in user
 						if (data._id == window.user._id) {
 							continue;
 						}
 
+						// Create list item for each user
 						html += '<li>';
 							html += '<div class="nearly-pepls">';
 								html += '<figure>';
@@ -98,24 +114,26 @@
 									html += '<h4>';
 										html += '<a href="/user/' + data.username + '">' + data.name + '</a>';
 									html += '</h4>';
-
 								html += '</div>';
 							html += '</div>';
 						html += '</li>';
 					}
 
+					// Inject generated HTML into the page
 					document.getElementById("search-results").innerHTML = html;
 
 				} else {
+					// Display error message
 					alert(response.message);
 				}
 			}
 		};
 
+		// Send the search query in FormData
 		var formData = new FormData();
 		formData.append("query", document.getElementById("query").value);
 		ajax.send(formData);
 	}
 </script>
 
-<%- include ("includes/footer") %>
+<%- include ("includes/footer") %> <!-- Include the footer partial -->
