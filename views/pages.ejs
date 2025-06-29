@@ -1,28 +1,36 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Include the common header (likely contains nav, CSS/JS links) -->
 
+<!-- Inline styles for premium section effects -->
 <style>
+	/* Blur effect applied to the main content area for premium lock */
 	.premium-section {
 		filter: blur(5px);
 	}
+
+	/* Styling the overlayed premium message box */
 	.premium {
 		position: fixed;
 		left: 30%;
 		top: 45%;
-		z-index: 100;
+		z-index: 100; /* Ensure it appears on top of blurred content */
 		background-color: white;
 	}
+
 	.premium h1 {
-		font-size: 70px;
+		font-size: 70px; /* Large title for emphasis */
 	}
+
 	.premium p {
-		font-size: 26px;
+		font-size: 26px; /* Subtitle or description */
 	}
 </style>
 
+<!-- Premium overlay message displayed on top of blurred content -->
 <div class="premium">
 	<h1>Premium feature</h1>
 </div>
 
+<!-- Main content is blurred to indicate it's locked for premium users -->
 <section class="premium-section">
 	<div class="gap gray-bg">
 		<div class="container-fluid">
@@ -30,21 +38,30 @@
 				<div class="col-md-12">
 					<div class="row" id="page-contents">
 
+						<!-- Left sidebar with user navigation or content -->
 						<div class="col-md-3">
 							<%- include ("includes/left-sidebar") %>
 						</div>
 
+						<!-- Center content area: user's liked pages (locked for premium) -->
 						<div class="col-md-6">
-
 							<div class="central-meta">
+
+								<!-- Section header -->
 								<div class="groups">
 									<span><i class="fa fa-file-text-o"></i> Your Liked Pages</span>
 								</div>
-								<ul class="liked-pages" id="all-pages"></ul>
-								<img src="public/blurs/pages.png">
-							</div>
 
+								<!-- Placeholder for dynamically loaded liked pages -->
+								<ul class="liked-pages" id="all-pages"></ul>
+
+								<!-- Blurred image as a fallback/teaser -->
+								<img src="public/blurs/pages.png">
+
+							</div>
 						</div>
+
+						<!-- Right column is intentionally empty or omitted -->
 					</div>
 				</div>
 			</div>
@@ -52,4 +69,4 @@
 	</div>
 </section>
 
-<%- include ("includes/footer") %>
+<%- include ("includes/footer") %> <!-- Include the common footer (likely contains scripts or closing HTML) -->
