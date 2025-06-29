@@ -1,148 +1,160 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Include the site-wide header (navigation, styles, etc.) -->
 
 <section>
+	<!-- Main section with a light gray background -->
 	<div class="gap gray-bg">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="row" id="page-contents">
 
+						<!-- Left sidebar (user menu, shortcuts, etc.) -->
 						<div class="col-md-3">
 							<%- include ("includes/left-sidebar") %>
 						</div>
 
+						<!-- Center column for posts and newsfeed -->
 						<div class="col-md-6">
 
+							<!-- Placeholder where the "Add Post" form will be dynamically injected -->
 							<div id="add-post-box"></div>
 
-							<div class="loadMore" id="newsfeed">
-
-							</div>
+							<!-- Container where the user's newsfeed (posts) will be rendered -->
+							<div class="loadMore" id="newsfeed"></div>
 						</div>
 
+						<!-- Right sidebar (suggestions, ads, etc.) -->
 						<div class="col-md-3">
 							<%- include ("includes/right-sidebar") %>
 						</div>
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
-
 <script>
+	// Flag to indicate we're on the homepage
 	var isHomePage = true;
 
+	/**
+	 * Handles form submission to create a new post.
+	 * Sends the form data (caption, image, video) to /addPost.
+	 * On success, resets the form and reloads the newsfeed.
+	 */
 	function doPost(form) {
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/addPost", true);
 
 		ajax.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-
 				var response = JSON.parse(this.responseText);
 
-				alert(response.message);
+				alert(response.message); // Display success or error message
 
 				if (response.status == "success") {
+					// Clear input fields after post is submitted
 					document.getElementById("form-add-post").querySelector("input[name='image']").value = "";
 					document.getElementById("form-add-post").querySelector("input[name='video']").value = "";
 					document.getElementById("form-add-post").querySelector("textarea[name='caption']").value = "";
 
+					// Hide image and video previews
 					document.getElementById("post-img-preview").style.display = "none";
 					document.getElementById("post-video-preview").style.display = "none";
 
+					// Reload the newsfeed to show the new post
 					showNewsfeed();
 				}
 			}
 		};
 
+		// Append form data including access token from localStorage
 		var formData = new FormData(form);
 		formData.append("accessToken", localStorage.getItem("accessToken"));
 		ajax.send(formData);
 
-		return false;
+		return false; // Prevent default form submission
 	}
 
+	/**
+	 * Fetches and displays the newsfeed posts.
+	 * Makes an AJAX call to /getNewsfeed and builds the post UI dynamically.
+	 */
 	function showNewsfeed() {
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/getNewsfeed", true);
 
 		ajax.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-
 				var response = JSON.parse(this.responseText);
 
 				var html = "";
+
+				// Loop through each post
 				for (var a = 0; a < response.data.length; a++) {
 					var data = response.data[a];
 
 					html += '<div class="central-meta item">';
-						html += '<div class="user-post">';
-							html += '<div class="friend-info">';
+					html += '<div class="user-post">';
+					html += '<div class="friend-info">';
 
-								html += '<figure>';
-									html += '<img onerror="this.src = \'/public/img/default_profile.jpg\'" src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
-								html += '</figure>';
+					// User profile picture
+					html += '<figure>';
+					html += '<img onerror="this.src = \'/public/img/default_profile.jpg\'" src="' + mainURL + "/" + data.user.profileImage + '" style="width: 45px; height: 45px; object-fit: cover;">';
+					html += '</figure>';
 
-								html += '<div class="friend-name">';
-									html += '<ins>';
-										if (data.type == "post")
-										{
-											html += '<a href="/user/' + data.user.username + '">';
-												html += data.user.name;
-											html += '</a>';
-										}
-										else
-										{
-											html += data.user.name;
-										}
-									html += '</ins>';
+					// User name and post timestamp
+					html += '<div class="friend-name">';
+					html += '<ins>';
+					if (data.type == "post") {
+						html += '<a href="/user/' + data.user.username + '">' + data.user.name + '</a>';
+					} else {
+						html += data.user.name;
+					}
+					html += '</ins>';
 
-									var createdAt = new Date(data.createdAt);
-									var date = createdAt.getDate() + "";
-									date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
-
-									html += '<span>Published: ' + date + '</span>';
-								html += '</div>';
-
-								html += '<div class="post-meta">';
-
-									html += '<div class="description">';
-										html += '<p>';
-											html += data.caption;
-										html += '</p>';
-									html += '</div>';
-
-									if (data.image != "") {
-										html += '<img src="' + mainURL + "/" + data.image + '">';
-									}
-
-									if (data.video != "") {
-										html += '<video style="height: 359px; width: 100%;" controls src="' + mainURL + "/" + data.video + '"></video>';
-									}
-
-									html += createLikesSection(data);
-								html += '</div>';
-							html += '</div>';
-
-							html += "<div id='post-comments-" + data._id + "'>";
-								html += createCommentsSection(data);
-							html += "</div>";
-
-						html += '</div>';
+					// Format the post date (e.g., "02 June, 2025")
+					var createdAt = new Date(data.createdAt);
+					var date = createdAt.getDate() + "";
+					date = date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear();
+					html += '<span>Published: ' + date + '</span>';
 					html += '</div>';
+
+					// Post content (caption, image, video)
+					html += '<div class="post-meta">';
+					html += '<div class="description"><p>' + data.caption + '</p></div>';
+
+					if (data.image != "") {
+						html += '<img src="' + mainURL + "/" + data.image + '">';
+					}
+					if (data.video != "") {
+						html += '<video style="height: 359px; width: 100%;" controls src="' + mainURL + "/" + data.video + '"></video>';
+					}
+
+					// Likes section (dynamically generated by helper)
+					html += createLikesSection(data);
+					html += '</div>'; // end post-meta
+					html += '</div>'; // end friend-info
+
+					// Comments section (dynamically generated by helper)
+					html += "<div id='post-comments-" + data._id + "'>";
+					html += createCommentsSection(data);
+					html += "</div>"; // end post-comments
+
+					html += '</div>'; // end user-post
+					html += '</div>'; // end central-meta item
 				}
+
+				// Inject all posts into the newsfeed container
 				document.getElementById("newsfeed").innerHTML = html;
 			}
 		};
 
+		// Send request with access token
 		var formData = new FormData();
 		formData.append("accessToken", localStorage.getItem("accessToken"));
 		ajax.send(formData);
 	}
 </script>
-
-<%- include ("includes/footer") %>
-
-
+<%- include ("includes/footer") %> <!-- Include the site-wide footer -->
