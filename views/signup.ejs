@@ -2,46 +2,59 @@
 <head>
 	<title>Social Network</title>
 
+	<!-- CSS Stylesheets for layout, theming, and responsiveness -->
 	<link rel="stylesheet" href="/public/css/main.min.css">
 	<link rel="stylesheet" href="/public/css/style.css">
 	<link rel="stylesheet" href="/public/css/color.css">
 	<link rel="stylesheet" href="/public/css/responsive.css">
-
 </head>
+
 <body>
+	<!-- Main layout container -->
 	<div class="theme-layout">
 		<div class="container-fluid pdng0">
 			<div class="row merged">
 				<div class="offset-md-3 col-md-6">
+
+					<!-- Signup background and form container -->
 					<div class="login-reg-bg">
 						<div class="log-reg-area sign">
+
+							<!-- Page title -->
 							<h2 class="log-title">Signup</h2>
 
+							<!-- Signup form -->
 							<form onsubmit="return doRegister(this);">
+
+								<!-- Full Name input -->
 								<div class="form-group">
 									<input type="text" required name="name" />
 									<label class="control-label">Full Name</label>
 									<i class="mtrl-select"></i>
 								</div>
 
+								<!-- Username input -->
 								<div class="form-group">
 									<input type="text" required name="username" />
 									<label class="control-label">User Name</label>
 									<i class="mtrl-select"></i>
 								</div>
 
+								<!-- Email input -->
 								<div class="form-group">
 									<input type="email" required name="email" />
 									<label class="control-label">Email</label>
 									<i class="mtrl-select"></i>
 								</div>
 
+								<!-- Password input -->
 								<div class="form-group">
 									<input type="password" required name="password" />
 									<label class="control-label">Password</label>
 									<i class="mtrl-select"></i>
 								</div>
 
+								<!-- Gender selection -->
 								<div class="form-radio">
 									<div class="radio">
 										<label>
@@ -58,49 +71,61 @@
 									</div>
 								</div>
 
+								<!-- Link to login if already registered -->
 								<a href="/login">Already have an account</a>
+
+								<!-- Submit button -->
 								<div class="submit-btns">
 									<button class="mtr-btn signup" name="submit" type="submit">
 										<span>Register</span>
 									</button>
 								</div>
 							</form>
+
 						</div>
-					</div>
+					</div> <!-- End of form container -->
+
 				</div>
 			</div>
 		</div>
 	</div>
 
-	
-
+	<!-- JavaScript: Handles AJAX registration -->
 	<script>
 		function doRegister(form) {
+			// Disable the submit button and show loading state
 			form.submit.setAttribute("disabled", "disabled");
 			form.submit.innerHTML = "<span>Loading...</span>";
 
+			// Create AJAX request to send form data to server
 			var ajax = new XMLHttpRequest();
 			ajax.open("POST", "/signup", true);
 
 			ajax.onreadystatechange = function() {
+				// When request is complete
 				if (this.readyState == 4 && this.status == 200) {
+					// Enable the submit button and reset text
 					form.submit.removeAttribute("disabled");
 					form.submit.innerHTML = "<span>Register</span>";
 
+					// Parse and handle server response
 					var response = JSON.parse(this.responseText);
-					alert(response.message);
+					alert(response.message); // Show success or error message
 
+					// If registration successful, redirect to login
 					if (response.status == "success") {
 						window.location.href = "/login";
 					}
 				}
 			};
 
+			// Send form data to server
 			ajax.send(new FormData(form));
+
+			// Prevent default form submission
 			return false;
 		}
 	</script>
 
 </body>
-
 </html>
