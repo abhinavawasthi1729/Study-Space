@@ -1,4 +1,4 @@
-<%- include ("includes/header") %> <!-- Include the common header (navigation, meta tags, etc.) -->
+<%- include("includes/header") %> <!-- Include the common header (navigation, meta tags, etc.) -->
 
 <!-- Styles specific to premium feature display -->
 <style>
@@ -14,11 +14,16 @@
 		top: 45%;
 		z-index: 100;
 		background-color: white;
+		padding: 20px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		text-align: center;
 	}
 
 	/* Large header text in premium popup */
 	.premium h1 {
 		font-size: 70px;
+		margin-bottom: 10px;
 	}
 
 	/* Description text in premium popup */
@@ -29,48 +34,46 @@
 
 <!-- Premium Feature Modal -->
 <div class="premium">
-	<h1>Premium feature</h1>
+	<h1>Premium Feature</h1>
+	<p>Please upgrade to access this feature</p>
 </div>
 
-<!-- Main content section, blurred due to premium modal -->
+<!-- Main blurred content section due to modal -->
 <section class="premium-section">
-	<div class="gap gray-bg"> <!-- Wrapper with background color -->
+	<div class="gap gray-bg"> <!-- Section wrapper with gray background -->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
 
-					<!-- Content layout: sidebar - main - sidebar -->
+					<!-- 3-column layout: left sidebar | main content | right sidebar -->
 					<div class="row" id="page-contents">
 
-						<!-- Left sidebar (user menu, links, etc.) -->
+						<!-- Left Sidebar -->
 						<div class="col-md-3">
-							<%- include ("includes/left-sidebar") %>
+							<%- include("includes/left-sidebar") %>
 						</div>
 
-						<!-- Main content: Friends list section -->
+						<!-- Main Content (Friends section) -->
 						<div class="col-md-6">
 							<div class="central-meta">
 								<div class="frnds">
-
-									<!-- Tabbed content area -->
+									<!-- Tab container -->
 									<div class="tab-content">
 										<div class="tab-pane active fade show" id="frends">
-
-											<!-- Friends list container (to be populated dynamically) -->
+											<!-- Dynamic friends list -->
 											<ul class="nearby-contct" id="friends"></ul>
 
-											<!-- Fallback blurred image for non-premium users -->
-											<img src="/public/blurs/friends.png">
-
+											<!-- Blurred fallback image for premium-only content -->
+											<img src="/public/blurs/friends.png" alt="Premium Content Preview">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<!-- Right sidebar (suggestions, trending, etc.) -->
+						<!-- Right Sidebar -->
 						<div class="col-md-3">
-							<%- include ("includes/right-sidebar") %>
+							<%- include("includes/right-sidebar") %>
 						</div>
 
 					</div> <!-- /#page-contents -->
@@ -81,69 +84,4 @@
 	</div>
 </section>
 
-<%- include ("includes/footer") %> <!-- Include the common footer (scripts, closing tags, etc.) -->
-<%- include ("includes/header") %>
-
-<style>
-	.premium-section {
-		filter: blur(5px);
-	}
-	.premium {
-		position: fixed;
-		left: 30%;
-		top: 45%;
-		z-index: 100;
-		background-color: white;
-	}
-	.premium h1 {
-		font-size: 70px;
-	}
-	.premium p {
-		font-size: 26px;
-	}
-</style>
-
-<div class="premium">
-	<h1>Premium feature</h1>
-</div>
-
-<section class="premium-section">
-	<div class="gap gray-bg">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row" id="page-contents">
-
-						<div class="col-md-3">
-							<%- include ("includes/left-sidebar") %>
-						</div>
-
-						<div class="col-md-6">
-							<div class="central-meta">
-								<div class="frnds">
-
-									<div class="tab-content">
-										<div class="tab-pane active fade show" id="frends">
-
-											<ul class="nearby-contct" id="friends"></ul>
-
-											<img src="/public/blurs/friends.png">
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<%- include ("includes/right-sidebar") %>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-<%- include ("includes/footer") %>
+<%- include("includes/footer") %> <!-- Include the common footer (scripts, closing tags, etc.) -->
