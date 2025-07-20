@@ -1,12 +1,17 @@
-<%- include ("includes/header") %>
+<%- include ("includes/header") %> <!-- Including header partial -->
 
+<!-- Profile Cover Section -->
 <section>
 	<div class="feature-photo">
 
+		<!-- Cover Photo Display -->
 		<figure>
-			<img class="cover-photo" id="cover-photo" style="width: 100%; height: 700px; object-fit: cover;" onerror="this.src = '/public/img/default_cover.jpg'" />
+			<img class="cover-photo" id="cover-photo"
+				style="width: 100%; height: 700px; object-fit: cover;"
+				onerror="this.src = '/public/img/default_cover.jpg'" />
 		</figure>
 
+		<!-- Cover Photo Upload Form -->
 		<form class="edit-phto" id="form-cover-photo" onsubmit="return false;">
 			<i class="fa fa-camera-retro"></i>
 			<label class="fileContainer">
@@ -15,13 +20,16 @@
 			</label>
 		</form>
 
+		<!-- Container for Profile Photo and Name -->
 		<div class="container-fluid">
 			<div class="row merged">
 				<div class="col-md-2">
+					<!-- Profile Photo Display and Upload -->
 					<div class="user-avatar">
 						<figure>
-
-							<img class="profile-image" id="profile-image" style="width: 100%; height: 150px; object-fit: cover;" onerror="this.src = '/public/img/default_profile.jpg'" />
+							<img class="profile-image" id="profile-image"
+								style="width: 100%; height: 150px; object-fit: cover;"
+								onerror="this.src = '/public/img/default_profile.jpg'" />
 
 							<form class="edit-phto" id="form-upload-image" onsubmit="return false;">
 								<i class="fa fa-camera-retro"></i>
@@ -33,6 +41,8 @@
 						</figure>
 					</div>
 				</div>
+
+				<!-- Display Name -->
 				<div class="col-md-10">
 					<div class="timeline-info">
 						<ul>
@@ -47,9 +57,12 @@
 	</div>
 </section>
 
+<!-- JavaScript Functions -->
 <script>
+	// Flag to indicate this is a profile update screen
 	var isUpdateProfile = true;
 
+	// Load user profile data into form and images
 	function showProfileData() {
 		document.querySelector(".cover-photo").setAttribute("src", mainURL + "/" + window.user.coverPhoto);
 		document.querySelector(".profile-image").setAttribute("src", mainURL + "/" + window.user.profileImage);
@@ -63,17 +76,16 @@
 		document.querySelector(".aboutMe").value = window.user.aboutMe;
 	}
 
+	// Upload cover photo to server
 	function uploadCoverPhoto(form) {
 		var form = document.getElementById("form-cover-photo");
 
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/uploadCoverPhoto", true);
 
-		ajax.onreadystatechange = function() {
+		ajax.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
-
 				var response = JSON.parse(this.responseText);
-
 				document.getElementById("cover-photo").setAttribute("src", response.data);
 			}
 		};
@@ -85,17 +97,16 @@
 		return false;
 	}
 
+	// Upload profile image to server
 	function uploadImage(form) {
 		var form = document.getElementById("form-upload-image");
 
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/uploadProfileImage", true);
 
-		ajax.onreadystatechange = function() {
+		ajax.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
-
 				var response = JSON.parse(this.responseText);
-
 				document.getElementById("profile-image").setAttribute("src", response.data);
 			}
 		};
@@ -107,6 +118,7 @@
 		return false;
 	}
 
+	// Submit profile update form
 	function doUpdateProfile(form) {
 		form.submit.setAttribute("disabled", "disabled");
 		form.submit.innerHTML = "<span>Loading...</span>";
@@ -114,14 +126,12 @@
 		var ajax = new XMLHttpRequest();
 		ajax.open("POST", "/updateProfile", true);
 
-		ajax.onreadystatechange = function() {
+		ajax.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
-
 				form.submit.removeAttribute("disabled");
 				form.submit.innerHTML = "<span>Save</span>";
 
 				var response = JSON.parse(this.responseText);
-
 				alert(response.message);
 			}
 		};
@@ -134,6 +144,7 @@
 	}
 </script>
 
+<!-- Main Profile Edit Section -->
 <section>
 	<div class="gap gray-bg">
 		<div class="container-fluid">
@@ -141,20 +152,23 @@
 				<div class="col-md-12">
 					<div class="row" id="page-contents">
 
+						<!-- Left Sidebar -->
 						<div class="col-md-3">
-                            <%- include ("includes/left-sidebar") %>
+							<%- include ("includes/left-sidebar") %>
 						</div>
 
+						<!-- Center Edit Form -->
 						<div class="col-md-6">
 							<div class="central-meta">
 								<div class="editing-info">
-
 									<h5 class="f-title">
 										<i class="ti-info-alt"></i>
 										Update Profile
 									</h5>
 
+									<!-- Profile Update Form -->
 									<form onsubmit="return doUpdateProfile(this);">
+										<!-- Name -->
 										<div class="form-group">
 											<input type="text" required class="name" name="name" />
 											<label class="control-label">Full Name</label>
@@ -163,6 +177,7 @@
 
 										<br><br>
 
+										<!-- Email -->
 										<div class="form-group">
 											<input class="email" />
 											<label class="control-label">Email</label>
@@ -171,6 +186,7 @@
 
 										<br><br>
 
+										<!-- DOB -->
 										<div class="form-group">
 											<input type="text" class="dob" name="dob" placeholder="DD/MM/YYYY" />
 											<label class="control-label">Date of birth</label>
@@ -179,7 +195,8 @@
 
 										<br><br>
 
-										<div class="form-group">	
+										<!-- City -->
+										<div class="form-group">
 											<input type="text" class="city" name="city" />
 											<label class="control-label">City</label>
 											<i class="mtrl-select"></i>
@@ -187,6 +204,7 @@
 
 										<br><br>
 
+										<!-- Country -->
 										<div class="form-group">
 											<input type="text" class="country" name="country" />
 											<label class="control-label">Country</label>
@@ -195,12 +213,14 @@
 
 										<br><br>
 
-										<div class="form-group">	
+										<!-- About Me -->
+										<div class="form-group">
 											<textarea rows="4" class="aboutMe" name="aboutMe"></textarea>
 											<label class="control-label">About Me</label>
 											<i class="mtrl-select"></i>
 										</div>
 
+										<!-- Submit -->
 										<button type="submit" class="mtr-btn" name="submit">
 											<span>Save</span>
 										</button>
@@ -209,8 +229,9 @@
 							</div>
 						</div>
 
+						<!-- Right Sidebar -->
 						<div class="col-md-3">
-                            <%- include ("includes/right-sidebar") %>
+							<%- include ("includes/right-sidebar") %>
 						</div>
 
 					</div>
@@ -220,4 +241,4 @@
 	</div>
 </section>
 
-<%- include ("includes/footer") %>
+<%- include ("includes/footer") %> <!-- Including footer partial -->
